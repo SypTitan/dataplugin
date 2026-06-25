@@ -1,0 +1,25 @@
+name: SlimeFly
+version: 1.0.0
+main: com.github.syptitan.slimefly.SlimeFly
+description: Allows for flying in claims
+author: SypTitan
+api-version: '26.1.2'
+
+depend: [GriefPrevention]
+
+permissions:
+  slimefly.use:
+    description: "Allows using /claimfly to fly in any trusted claims"
+    default: op
+  
+  slimefly.admin:
+    description: "Allows toggling other people's /claimfly"
+    default: op
+    children:
+      slimefly.use: true
+  
+commands:
+  claimfly:
+    aliases: [claimfly, cfly]
+    description: "Enable or disable flying in claims"
+    usage: "/claimfly <on|off|toggle>"
