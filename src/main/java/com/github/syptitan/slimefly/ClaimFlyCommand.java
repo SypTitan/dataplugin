@@ -2,7 +2,6 @@ package com.github.syptitan.slimefly;
 
 import java.util.List;
 
-import org.apache.maven.artifact.repository.metadata.Plugin;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -66,6 +65,10 @@ public class ClaimFlyCommand implements BasicCommand {
         if (newState == true) {
             if (!manager.inValidClaim(player)) {
                 player.sendMessage(plugin.getMessage_no_perm());
+                return;
+            }
+            if (player.getAllowFlight()) {
+                player.sendMessage(plugin.getMessage_already_flying());
                 return;
             }
             manager.setFly(player, true);

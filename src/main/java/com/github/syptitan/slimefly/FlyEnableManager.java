@@ -1,17 +1,16 @@
 package com.github.syptitan.slimefly;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import me.ryanhamshire.GriefPrevention.Claim;
-import me.ryanhamshire.GriefPrevention.ClaimPermission;
-import me.ryanhamshire.GriefPrevention.GriefPrevention;
+import com.github.syptitan.slimefly.Checkers.Checker;
 
 public class FlyEnableManager {
     /*
@@ -26,11 +25,21 @@ public class FlyEnableManager {
     private final SlimeFly plugin;
     private int slowfalling_time;
     private boolean slowfalling_manual;
+    
+    private List<Checker> checkers;
 
     public FlyEnableManager(SlimeFly plugin, int slowfalling_time, boolean slowfalling_manual) {
         this.plugin = plugin;
         this.slowfalling_time = slowfalling_time;
         this.slowfalling_manual = slowfalling_manual;
+        
+        checkers = new ArrayList<>();
+        if (plugin.getGPEnabled()) {
+            checkers.add(new com.github.syptitan.slimefly.Checkers.CheckerGP());
+        }
+        if (plugin.getP2Enabled()) {
+            checkers.add(new com.github.syptitan.slimefly.Checkers.CheckerP2());
+        }
     }
 
     public boolean getFlyEnabled(Player player) {
@@ -52,20 +61,11 @@ public class FlyEnableManager {
     }
 
     public boolean inValidClaim(Player player) {
-        Claim claim = GriefPrevention.instance.dataStore.getClaimAt(player.getLocation(), true, null);
-
-        if (claim == null) {
-            return false;
+        for (Checker checker : checkers) {
+            if (checker.validFlight(player)) {
+                return true;
+            }
         }
-
-        if (claim.getOwnerID() == player.getUniqueId()) {
-            return true;
-        }
-
-        if (claim.checkPermission(player, ClaimPermission.Build, null) == null) {
-            return true;
-        }
-
         return false;
     }
 
