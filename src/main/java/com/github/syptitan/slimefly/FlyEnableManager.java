@@ -28,12 +28,31 @@ public class FlyEnableManager {
     
     private List<Checker> checkers;
 
-    public FlyEnableManager(SlimeFly plugin, int slowfalling_time, boolean slowfalling_manual) {
+    public FlyEnableManager(SlimeFly plugin) {
         this.plugin = plugin;
-        this.slowfalling_time = slowfalling_time;
-        this.slowfalling_manual = slowfalling_manual;
+        this.slowfalling_time = plugin.getSlowfallingTime();
+        this.slowfalling_manual = plugin.getSlowfallingManual();
         
         checkers = new ArrayList<>();
+        if (plugin.getGPEnabled()) {
+            checkers.add(new com.github.syptitan.slimefly.Checkers.CheckerGP());
+        }
+        if (plugin.getP2Enabled()) {
+            checkers.add(new com.github.syptitan.slimefly.Checkers.CheckerP2());
+        }
+    }
+
+    public void reloadConfig() {
+        this.slowfalling_time = plugin.getSlowfallingTime();
+        this.slowfalling_manual = plugin.getSlowfallingManual();
+        
+        if (checkers == null) {
+            checkers = new ArrayList<>();
+        }
+        else {
+            checkers.clear();
+        }
+
         if (plugin.getGPEnabled()) {
             checkers.add(new com.github.syptitan.slimefly.Checkers.CheckerGP());
         }

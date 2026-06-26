@@ -37,14 +37,15 @@ public class ClaimFlyCommand implements BasicCommand {
         CommandSender sender = source.getSender();
 
         if (args.length > 1) {
-            sender.sendMessage("/claimfly <on|off|toggle>");
+            sender.sendMessage("/claimfly [<on|off|toggle>]");
             return;
         }
 
         if (args.length == 1 && !List.of("on", "off", "toggle").contains(args[0])) {
-            sender.sendMessage("/claimfly <on|off|toggle>");
+            sender.sendMessage("/claimfly [<on|off|toggle>]");
             return;
         }
+        
 
         boolean newState = false;
 

@@ -38,12 +38,12 @@ public class SlimeFly extends JavaPlugin implements Listener {
         
         FileConfiguration config = getConfig();
         
-        checkdelay = config.getInt("check-delay", 5);
-        slowfalling_time = config.getInt("slowfalling-time", 5);
-        slowfalling_manual = config.getBoolean("manual-slowfalling", false);
+        checkdelay = config.getInt("check-delay");
+        slowfalling_time = config.getInt("slowfalling-time");
+        slowfalling_manual = config.getBoolean("manual-slowfalling");
 
-        griefprevention_enabled = config.getBoolean("enable-griefprevention", true);
-        plotsquared_enabled = config.getBoolean("enable-plotsquared", true);
+        griefprevention_enabled = config.getBoolean("enable-griefprevention");
+        plotsquared_enabled = config.getBoolean("enable-plotsquared");
 
         if (!Bukkit.getPluginManager().isPluginEnabled("GriefPrevention")) { 
             griefprevention_enabled = false; 
@@ -58,20 +58,56 @@ public class SlimeFly extends JavaPlugin implements Listener {
             Bukkit.getLogger().warning("[SlimeFly] No claim providers have been enabled, claimfly will be useless");
         }
         
-        message_enable = config.getString("string-enabled", "Claimfly enabled!");
-        message_disable = config.getString("string-disabled", "Claimfly disabled!");
-        message_auto_disable = config.getString("string-auto-disabled", "Claimfly disabled!");
-        message_no_perm = config.getString("string-no-permission", "You can only claimfly in claims you own or are trusted in!");
-        message_already_off = config.getString("string-already-off", "Claimfly already disabled");
-        message_already_flying = config.getString("string-already-flying", "You are already flying from another source!");
+        message_enable = config.getString("string-enabled");
+        message_disable = config.getString("string-disabled");
+        message_auto_disable = config.getString("string-auto-disabled");
+        message_no_perm = config.getString("string-no-permission");
+        message_already_off = config.getString("string-already-off");
+        message_already_flying = config.getString("string-already-flying");
         
 
         
-        manager = new FlyEnableManager(this, slowfalling_time, slowfalling_manual);
+        manager = new FlyEnableManager(this);
         
         BasicCommand flycmd = new ClaimFlyCommand(manager, this);
         registerCommand("claimfly", flycmd);
         registerCommand("cfly", flycmd);
+
+        registerCommand("claimflyreload", new ReloadCommand(this));
+    }
+
+    public void reloadConfiguration() {
+        reloadConfig();
+        FileConfiguration config = getConfig();
+
+        checkdelay = config.getInt("check-delay");
+        slowfalling_time = config.getInt("slowfalling-time");
+        slowfalling_manual = config.getBoolean("manual-slowfalling");
+
+        griefprevention_enabled = config.getBoolean("enable-griefprevention");
+        plotsquared_enabled = config.getBoolean("enable-plotsquared");
+
+        if (!Bukkit.getPluginManager().isPluginEnabled("GriefPrevention")) { 
+            griefprevention_enabled = false; 
+            Bukkit.getLogger().warning("[SlimeFly] Griefprevention is enabled in config but not present!");
+        }
+        if (!Bukkit.getPluginManager().isPluginEnabled("PlotSquared")) {
+            plotsquared_enabled = false;
+            Bukkit.getLogger().warning("[SlimeFly] PlotSquared is enabled in config but not present!");
+        }
+
+        if (!griefprevention_enabled && !plotsquared_enabled) {
+            Bukkit.getLogger().warning("[SlimeFly] No claim providers have been enabled, claimfly will be useless");
+        }
+        
+        message_enable = config.getString("string-enabled");
+        message_disable = config.getString("string-disabled");
+        message_auto_disable = config.getString("string-auto-disabled");
+        message_no_perm = config.getString("string-no-permission");
+        message_already_off = config.getString("string-already-off");
+        message_already_flying = config.getString("string-already-flying");
+
+        manager.reloadConfig();
     }
     
     @EventHandler
@@ -90,11 +126,19 @@ public class SlimeFly extends JavaPlugin implements Listener {
     public boolean getP2Enabled() {
         return plotsquared_enabled;
     }
-
     
     public int getCheckDelay() {
         return checkdelay;
     }
+
+    public int getSlowfallingTime() {
+        return slowfalling_time;
+    }
+
+    public boolean getSlowfallingManual() {
+        return slowfalling_manual;
+    }
+
     
     public String getMessage_enable() {
         return message_enable;

@@ -6,7 +6,7 @@
 
     <groupId>com.github.syptitan</groupId>
     <artifactId>slimefly</artifactId>
-    <version>1.1.1</version>
+    <version>1.2.0</version>
 
     <properties>
         <maven.compiler.source>25</maven.compiler.source>
