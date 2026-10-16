@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.github.syptitan</groupId>
-    <artifactId>slimefly</artifactId>
-    <version>1.2.0</version>
+    <artifactId>fogswamp</artifactId>
+    <version>0.1.0</version>
 
     <properties>
         <maven.compiler.source>25</maven.compiler.source>

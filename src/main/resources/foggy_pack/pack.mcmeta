@@ -1,0 +1,10 @@
+{
+    "pack": {
+        "description": "Adds a foggy swamp biome",
+        "min_format": 101,
+        "max_format": [
+            107,
+            1
+        ]
+    }
+}

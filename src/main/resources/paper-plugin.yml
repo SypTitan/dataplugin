@@ -1,0 +1,7 @@
+name: FogSwamp
+version: '0.1.0'
+main: com.github.syptitan.fogswamp.FogSwamp
+bootstrapper: com.github.syptitan.fogswamp.FogSwampBootStrap
+description: Adds a custom foggy swamp biome
+author: SypTitan
+api-version: '26.2'
